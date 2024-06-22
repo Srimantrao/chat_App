@@ -4,7 +4,10 @@ class AppUrl {
   static const base_url = "https://api.baii.me/api/";
 
   //showglobalchat
-
+  //get
   static const showglobalchat = "${base_url}showglobalchat";
-  static const createglobaluser = "${base_url}createglobaluser";
+
+  //post
+  static const createglobaluser = "${base_url}createglobalchat";
+  static const showglobaluser = "${base_url}showglobaluser";
 }

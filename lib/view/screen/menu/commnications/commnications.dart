@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:chat_app/controller/API_Hendal/goChat%20_APi_Controller.dart';
 import 'package:chat_app/controller/API_Hendal/showgloabal_chat.dart';
 import 'package:chat_app/view/color.dart';
 import 'package:chat_app/view/icons.dart';
@@ -17,7 +18,10 @@ class Commnications extends StatefulWidget {
 }
 
 class _CommnicationsState extends State<Commnications> {
+  TextEditingController chat = Get.put(TextEditingController());
+
   ShowgloabalChat showchat = Get.put(ShowgloabalChat());
+  GochatApiController showchats = Get.put(GochatApiController());
 
   @override
   void initState() {
@@ -50,6 +54,7 @@ class _CommnicationsState extends State<Commnications> {
               ),
               child: Center(
                 child: TextField(
+                  controller: chat,
                   decoration: InputDecoration(
                     hintText: Commnications_text.Enter_The_Message,
                     hintStyle: TextStyle(
@@ -69,18 +74,23 @@ class _CommnicationsState extends State<Commnications> {
                 ),
               ),
             ),
-            Container(
-              width: Get.width / 7,
-              height: Get.height / 15,
-              decoration: BoxDecoration(
-                color: AppColor.active_Textfild_color,
-                borderRadius: BorderRadius.circular(Get.width / 50),
-                border: Border.all(
+            GestureDetector(
+              onTap: () {
+                showchats.SinupApiController_faction(textvar: chat.text);
+              },
+              child: Container(
+                width: Get.width / 7,
+                height: Get.height / 15,
+                decoration: BoxDecoration(
                   color: AppColor.active_Textfild_color,
+                  borderRadius: BorderRadius.circular(Get.width / 50),
+                  border: Border.all(
+                    color: AppColor.active_Textfild_color,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: SvgPicture.asset(AppIcons.Sent),
+                child: Center(
+                  child: SvgPicture.asset(AppIcons.Sent),
+                ),
               ),
             ),
           ],
@@ -125,12 +135,13 @@ class _CommnicationsState extends State<Commnications> {
         ),
       ),
       body: Container(
-          height: Get.height,
-          width: Get.width,
-          decoration: BoxDecoration(
-            color: AppColor.text_color,
-          ),
-          child: Obx(() {
+        height: Get.height,
+        width: Get.width,
+        decoration: BoxDecoration(
+          color: AppColor.text_color,
+        ),
+        child: Obx(
+          () {
             if (showchat.isloading.value) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -139,12 +150,15 @@ class _CommnicationsState extends State<Commnications> {
               return Column(
                 children: [
                   Text(
-                    showchat.showgloabal_data['data'][0]['user_details'][0]['email'],
+                    showchat.showgloabal_data['data'][0]['user_details'][0]
+                        ['email'],
                   ),
                 ],
               );
             }
-          })),
+          },
+        ),
+      ),
     );
   }
 }

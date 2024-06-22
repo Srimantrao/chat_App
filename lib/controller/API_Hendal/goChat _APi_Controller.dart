@@ -1,37 +1,25 @@
-// ignore_for_file: file_names, non_constant_identifier_names, avoid_print
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 
+import 'package:chat_app/view/icons.dart';
 import 'package:chat_app/view/url.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class SinupApiController extends GetxController {
-  var isLoding = false.obs;
-  var Sinup_data;
+class GochatApiController extends GetxController {
+  var isloding = false.obs;
+  var data;
 
-  Future SinupApiController_faction({
-    required String FullName,
-    required String Phone,
-    required String Email,
-    required String Password,
-    required String Address,
-  }) async {
+  Future SinupApiController_faction({required String textvar}) async {
     try {
       if (kDebugMode) {
-        print('FirstName :- $FullName');
-        print('Phonenumber :- $Phone');
-        print('LastName :- $Email');
-        print('Email :- $Password');
-        print('Password :- $Address');
+        print('text :- $textvar');
       }
 
       Map<String, dynamic> body = {
-        'name': FullName,
-        'phone_number': Phone,
-        'email': Email,
-        'address': Address,
+        'name': textvar,
       };
 
       if (kDebugMode) {
@@ -44,9 +32,9 @@ class SinupApiController extends GetxController {
         body: body,
       );
       if (responce.statusCode == 200 || responce.statusCode == 201) {
-        Sinup_data = jsonDecode(responce.body);
+        data = jsonDecode(responce.body);
         if (kDebugMode) {
-          print("Sinup Data :-$Sinup_data");
+          print("Data :-$data");
         }
       } else {
         throw {
@@ -58,7 +46,7 @@ class SinupApiController extends GetxController {
         print("Sinup Data Error = $e");
       }
     } finally {
-      isLoding.value = false;
+      isloding.value = false;
     }
   }
 }

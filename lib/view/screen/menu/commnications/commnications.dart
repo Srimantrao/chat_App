@@ -10,14 +10,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Commnications extends StatefulWidget {
-  const Commnications({super.key});
+class communication extends StatefulWidget {
+  final String name;
+
+  const communication({super.key, required this.name});
 
   @override
-  State<Commnications> createState() => _CommnicationsState();
+  State<communication> createState() => _communicationState();
 }
 
-class _CommnicationsState extends State<Commnications> {
+class _communicationState extends State<communication> {
   TextEditingController chat = Get.put(TextEditingController());
 
   ShowgloabalChat showchat = Get.put(ShowgloabalChat());
@@ -119,7 +121,7 @@ class _CommnicationsState extends State<Commnications> {
                       ),
                     ),
                     Text(
-                      "Name",
+                      widget.name,
                       style: TextStyle(
                         fontSize: Get.width / 25,
                         color: AppColor.text_color,
@@ -147,13 +149,25 @@ class _CommnicationsState extends State<Commnications> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return Column(
-                children: [
-                  Text(
-                    showchat.showgloabal_data['data'][0]['user_details'][0]
-                        ['email'],
-                  ),
-                ],
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: Get.width / 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      showchat.showgloabal_data['data'][0]['user_details'][0]
+                          ['email'],
+                    ),
+                    Text(
+                      showchat.showgloabal_data['data'][0]['user_details'][0]
+                          ['email'],
+                    ),
+                    Text(
+                      showchat.showgloabal_data['data'][0]['user_details'][0]
+                          ['email'],
+                    ),
+                  ],
+                ),
               );
             }
           },

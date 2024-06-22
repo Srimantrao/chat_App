@@ -104,8 +104,9 @@ class Textfilds extends StatelessWidget {
 class Phonefild extends StatelessWidget {
   final bool Textfild;
   final void Function()? onTap;
+  final TextEditingController? controller;
 
-  const Phonefild({super.key, required this.Textfild, this.onTap});
+  const Phonefild({super.key, required this.Textfild, this.onTap, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +135,7 @@ class Phonefild extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(5),
             child: IntlPhoneField(
+              controller: controller,
               onTap: onTap,
               autofocus: false,
               autovalidateMode: AutovalidateMode.disabled,

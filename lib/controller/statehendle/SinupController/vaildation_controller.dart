@@ -1,6 +1,10 @@
-// ignore_for_file: non_constant_identifier_names, annotate_overrides
+// ignore_for_file: non_constant_identifier_names, annotate_overrides, prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../view/screen/menu/commnications/commnications.dart';
 
 class VaildationController with ChangeNotifier {
   TextEditingController fullname_controller = TextEditingController();
@@ -9,6 +13,8 @@ class VaildationController with ChangeNotifier {
   TextEditingController password_controller = TextEditingController();
   TextEditingController Address_controller = TextEditingController();
   TextEditingController postal_controller = TextEditingController();
+
+  bool allClear = true;
 
   final phoneRegExp = RegExp(r'^\+?1?\d{9,15}$');
   final emailRegExp = RegExp(r'^\+?1?\d{9,15}$');
@@ -123,7 +129,17 @@ class VaildationController with ChangeNotifier {
       _postal_Error = "";
     }
     notifyListeners();
-  }
 
-  notifyListeners();
+    if (allClear) {
+      Get.to(
+        () => communication(
+          name: fullname_controller.text,
+        ),
+        duration: Duration(milliseconds: 800),
+        transition: Transition.downToUp,
+      );
+
+      notifyListeners();
+    }
+  }
 }

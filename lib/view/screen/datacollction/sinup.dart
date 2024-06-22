@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, curly_braces_in_flow_control_structures, unnecessary_null_comparison
 
 import 'package:chat_app/controller/API_Hendal/Sinup_API_Controller.dart';
 import 'package:chat_app/controller/statehendle/SinupController/sinup_controller.dart';
@@ -36,6 +36,21 @@ class _SinupState extends State<Sinup> {
     setState(() {
       selectedGender = gender;
     });
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
   }
 
   bool isvis = false;
@@ -108,6 +123,7 @@ class _SinupState extends State<Sinup> {
 
                           //Phone
                           Phonefild(
+                            controller: vali.phone_controller,
                             Textfild: Sinup_Con.phone,
                             onTap: () {
                               Sinup_Con.PhoneNumber_Boder();
@@ -216,6 +232,7 @@ class _SinupState extends State<Sinup> {
                                   ),
                                 ),
                                 child: TextField(
+                                  controller: vali.Address_controller,
                                   onTap: () {
                                     Sinup_Con.Address_Boder();
                                   },
@@ -342,20 +359,87 @@ class _SinupState extends State<Sinup> {
                           SizedBox(height: Get.height / 70),
 
                           //Date
-                          Dropdown_menu(
-                            icon: SvgPicture.asset(AppIcons.date),
-                            onTap: () {
+                          Text(
+                            Sinup_String.Phone,
+                            style: TextStyle(
+                              color: AppColor.button_color,
+                              fontFamily: GoogleFonts.exo().fontFamily,
+                              fontSize: Get.width / 21,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: Get.height / 70),
+                          GestureDetector(
+                            onTap: () async {
                               Sinup_Con.Date_Boder();
-                            },
-                            Textfild: Sinup_Con.Date,
-                            drop_name: Sinup_String.My_date_of_birth,
-                            items: coutryList
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
+                              final DateTime? picked = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(2101),
                               );
-                            }).toList(),
+                              if (picked != null && picked != selectedDate)
+                                setState(() {
+                                  selectedDate = picked;
+                                });
+                            },
+                            child: Container(
+                              height: Get.height / 14,
+                              width: Get.width,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Get.width / 50),
+                                color: (Sinup_Con.Date)
+                                    ? AppColor.Textfild_color
+                                    : AppColor.text_color,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Container(
+                                  width: Get.width,
+                                  height: Get.height / 15,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(Get.width / 50),
+                                    border: Border.all(
+                                      color: (Sinup_Con.Date)
+                                          ? AppColor.active_Textfild_color
+                                          : AppColor.deactive_Textfild_color,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: Get.width / 30),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              selectedDate == null
+                                                  ? 'Select date'
+                                                  : '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}',
+                                              style: TextStyle(
+                                                fontFamily: GoogleFonts.exo()
+                                                    .fontFamily,
+                                                fontSize: Get.width / 21,
+                                                color: AppColor
+                                                    .deactive_Textfild_color,
+                                              ),
+                                            ),
+                                            SvgPicture.asset(AppIcons.date),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           SizedBox(height: Get.height / 70),
                           Text(
@@ -437,19 +521,18 @@ class _SinupState extends State<Sinup> {
                           SizedBox(height: Get.height / 30),
                           GestureDetector(
                             onTap: () {
-                              // Create.SinupApiController_faction(
-                              //   FullName: vali.fullname_controller.text,
-                              //   Phone: vali.phone_controller.text,
-                              //   Email: vali.email_controller.text,
-                              //   Password: vali.password_controller.text,
-                              //   Address: vali.Address_controller.text,
-                              // );
-                              // vali.Validation();
-                              Get.to(
-                                () => Commnications(),
-                                duration: Duration(milliseconds: 800),
-                                transition: Transition.downToUp,
-                              );
+                              vali.Validation();
+                              Create.SinupApiController_faction(
+                                  fullName: vali.fullname_controller.text,
+                                  email: vali.email_controller.text,
+                                  phone: vali.phone_controller.text,
+                                  gender: selectedGender.toString(),
+                                  address: vali.Address_controller.text,
+                                  city: selectedCity.toString(),
+                                  state: selectedState.toString(),
+                                  dateOfBirth: selectedDate.toString(),
+                                );
+
                             },
                             child: Container(
                               width: Get.width,

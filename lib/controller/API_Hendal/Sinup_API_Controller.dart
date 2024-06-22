@@ -11,54 +11,47 @@ class SinupApiController extends GetxController {
   var isLoding = false.obs;
   var Sinup_data;
 
-  Future SinupApiController_faction({
-    required String FullName,
-    required String Phone,
-    required String Email,
-    required String Password,
-    required String Address,
+  Future<void> SinupApiController_faction({
+    required String fullName,
+    required String email,
+    required String phone,
+    required String gender,
+    required String address,
+    required String city,
+    required String state,
+    required String dateOfBirth,
   }) async {
+    final url = Uri.parse("https://api.baii.me/api/createglobaluser");
+    final headers = {
+      "AuthToken": "2ec26ad9-e039-445e-915e-zACl56sr2q",
+      "Content-Type": "application/json"
+    };
+
+    final body = json.encode({
+      "name": fullName,
+      "email": email,
+      "phone_number": phone,
+      "gender": gender,
+      "address": address,
+      "city": city,
+      "state": state,
+      "date_of_birth": dateOfBirth,
+    });
+
     try {
-      if (kDebugMode) {
-        print('FirstName :- $FullName');
-        print('Phonenumber :- $Phone');
-        print('LastName :- $Email');
-        print('Email :- $Password');
-        print('Password :- $Address');
-      }
+      final response = await http.post(url, headers: headers, body: body);
 
-      Map<String, dynamic> body = {
-        'name': FullName,
-        'phone_number': Phone,
-        'email': Email,
-        'address': Address,
-      };
-
-      if (kDebugMode) {
-        print(body);
-      }
-
-      final responce = await http.post(
-        Uri.parse(AppUrl.createglobaluser),
-        headers: {'AuthToken': '2ec26ad9-e039-445e-915e-zACl56sr2q'},
-        body: body,
-      );
-      if (responce.statusCode == 200 || responce.statusCode == 201) {
-        Sinup_data = jsonDecode(responce.body);
-        if (kDebugMode) {
-          print("Sinup Data :-$Sinup_data");
-        }
+      if (response.statusCode == 200) {
+        print("Sign Up Successful: ${response.body}");
       } else {
-        throw {
-          "Sinup Data Error this :- ${responce.statusCode} , ${responce.body}"
-        };
+        print("Sign Up Failed: ${response.statusCode} ${response.body}");
+
+        if (response.statusCode == 401) {
+          print("Unauthorized Request: Check your authorization token");
+        }
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("Sinup Data Error = $e");
-      }
-    } finally {
-      isLoding.value = false;
+      print("Error during sign up: $e");
     }
   }
 }

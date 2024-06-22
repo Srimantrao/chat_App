@@ -19,7 +19,7 @@ class GochatApiController extends GetxController {
       }
 
       Map<String, dynamic> body = {
-        'name': textvar,
+        'image': textvar,
       };
 
       if (kDebugMode) {

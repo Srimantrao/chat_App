@@ -8,6 +8,6 @@ class AppUrl {
   static const showglobalchat = "${base_url}showglobalchat";
 
   //post
-  static const createglobaluser = "${base_url}createglobalchat";
+  static const createglobaluser = "https://api.baii.me/api/createglobalchat";
   static const showglobaluser = "${base_url}showglobaluser";
 }
